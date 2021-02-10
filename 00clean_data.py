@@ -20,16 +20,16 @@ for column_name in FurnaceData_ColumnList:
         # Delete 0 Value
         if FurnaceData.iat[row_number, column_number] == 0.0:
             indexes.append(i)
-        FurnaceData.drop(indexes, axis=0, inplace=True)
-        # Remove Duplicate Data
-        #if column_name != "FEED":
-        #    FurnaceData.drop_duplicates(column_name, inplace=True)
-        # Delete Outlier Data
-        #FurnaceData = FurnaceData[
-        #    np.abs(FurnaceData[column_name] - FurnaceData[column_name].mean()) <= (
-        #            3 * FurnaceData[column_name].std()
-        #    )
-        #    ]
+    FurnaceData.drop(indexes, axis=0, inplace=True)
+    # Remove Duplicate Data
+    if column_name != "FEED":
+        FurnaceData.drop_duplicates(column_name, inplace=True)
+    # Delete Outlier Data
+    FurnaceData = FurnaceData[
+        np.abs(FurnaceData[column_name] - FurnaceData[column_name].mean()) <= (
+                3 * FurnaceData[column_name].std()
+        )
+        ]
 
 # Export Data to CSV File
 FurnaceData.to_csv("00FurnaceCleanData.csv")
