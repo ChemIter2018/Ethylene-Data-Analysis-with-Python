@@ -33,6 +33,7 @@ for column_name in FurnaceData_ColumnList:
 
 # Export Data to CSV File
 FurnaceData.to_csv("00FurnaceCleanData.csv")
+FurnaceData.describe().to_csv("00FurnaceCleanDataDescribe.csv")
 
 # Run Time
 finish_time = time()
