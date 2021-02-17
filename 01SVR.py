@@ -15,14 +15,15 @@ FurnaceData = pd.read_csv("00FurnaceCleanData.csv")
 FurnaceDataX = FurnaceData.iloc[:, 1:20]
 FurnaceDataX_Scale = preprocessing.scale(FurnaceDataX)
 # If value < 1, SVR Can't calculate normally, So multiply the value by 1000.
-FurnaceDataPE = FurnaceData.iloc[:, 26] * 1000
+n = 1000
+FurnaceDataPE = FurnaceData.iloc[:, 26] * n
 
 # Split Train and Test Data
 # random_state: RandomState instance or None, default=None
 X_train, X_test, y_train, y_test = train_test_split(FurnaceDataX_Scale, FurnaceDataPE, random_state=0, test_size=0.3)
 
 # SVR
-svm_poly_reg = SVR(kernel="poly", degree=2, C=100, epsilon=0.1, gamma="scale")
+svm_poly_reg = SVR(kernel="rbf", degree=3, C=1000, epsilon=0.5, gamma="auto")
 svm_poly_reg.fit(X_train, y_train)
 
 # Test Data Predict
@@ -35,18 +36,21 @@ print(r2_score(y_test, y_test_predict))
 sns.set_theme(style='darkgrid', font='Arial', font_scale=1.5)
 plt.subplots(figsize=(16, 13))
 
-g = sns.scatterplot(x=y_test / 1000, y=y_test_predict / 1000)
+y_test = y_test/n
+y_test_predict = y_test_predict/n
+
+g = sns.scatterplot(x=y_test, y=y_test_predict)
 g.set(xlim=(0.48, 0.55))
 g.set(ylim=(0.48, 0.55))
 
-sns.histplot(x=y_test / 1000, y=y_test_predict / 1000, bins=50, pthresh=.1, cmap="mako",
+sns.histplot(x=y_test, y=y_test_predict, bins=50, pthresh=.1, cmap="mako",
              cbar=True, cbar_kws=dict(shrink=.75))
-sns.kdeplot(x=y_test / 1000, y=y_test_predict / 1000, levels=5, color="w", linewidths=1.5)
+sns.kdeplot(x=y_test, y=y_test_predict, levels=5, color="w", linewidths=1.5)
 
 sns.despine(trim=True, left=True)
 
-qq = np.linspace(np.min(((y_test / 1000).min(), (y_test_predict / 1000).min())),
-                 np.max(((y_test / 1000).max(), (y_test_predict / 1000).max())))
+qq = np.linspace(np.min((y_test.min(), y_test_predict.min())),
+                 np.max((y_test.max(), y_test_predict.max())))
 plt.plot(qq, qq, color="navy", ls="--", linewidth=2)
 
 plt.xlabel('Measured Value', fontsize=30, fontweight='bold')
