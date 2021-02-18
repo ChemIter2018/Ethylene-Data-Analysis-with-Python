@@ -29,11 +29,11 @@ FurnaceDataPE = FurnaceData.iloc[:, 26] * n
 X_train, X_test, y_train, y_test = train_test_split(FurnaceDataX_Scale, FurnaceDataPE, random_state=0, test_size=0.3)
 
 # SVR
-svm_poly_reg = SVR(kernel="rbf", degree=3, C=1000, epsilon=0.5, gamma="auto")
-svm_poly_reg.fit(X_train, y_train)
+svm_reg = SVR(kernel="rbf", degree=3, C=1000, epsilon=0.5, gamma="auto")
+svm_reg.fit(X_train, y_train)
 
 # Test Data Predict
-y_test_predict = svm_poly_reg.predict(X_test)
+y_test_predict = svm_reg.predict(X_test)
 
 # Measure Regression Performance
 print(r2_score(y_test, y_test_predict))
