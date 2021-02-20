@@ -24,13 +24,11 @@ FurnaceDataPE = FurnaceData.iloc[:, 26]*100
 # Split Train and Test Data
 # random_state: RandomState instance or None, default=None
 X_train, X_test, y_train, y_test = train_test_split(FurnaceDataX_Scale, FurnaceDataPE, random_state=0, test_size=0.3)
-a = np.logspace(-1, 1, 5)
 parameters = [{'activation': ('identity', 'logistic', 'tanh', 'relu'),
-               'solver': ('lbfgs', 'sgd', 'adam'),
-               'learning_rate': ('constant', 'invscaling', 'adaptive'),
-               'alpha': a}]
+               'solver': ('sgd', 'adam'),
+               'learning_rate': ('constant', 'adaptive')}]
 
-mlp = MLPRegressor()
+mlp = MLPRegressor(random_state=1, max_iter=500)
 clf = GridSearchCV(mlp, parameters, cv=5)
 clt_result = clf.fit(X_train, y_train)
 
