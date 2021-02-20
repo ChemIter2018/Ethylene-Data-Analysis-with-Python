@@ -29,7 +29,7 @@ FurnaceDataPE = FurnaceData.iloc[:, 26] * n
 X_train, X_test, y_train, y_test = train_test_split(FurnaceDataX_Scale, FurnaceDataPE, random_state=0, test_size=0.3)
 
 # MLR
-mlr_reg = MLPRegressor(kernel="rbf", degree=3, C=1000, epsilon=0.5, gamma="auto")
+mlr_reg = MLPRegressor(random_state=1, max_iter=500, activation='tanh', learning_rate='constant', solver='adam')
 mlr_reg.fit(X_train, y_train)
 
 # Test Data Predict
@@ -63,7 +63,7 @@ plt.xlabel('Measured Value', fontsize=30, fontweight='bold')
 plt.ylabel('Predicted Value', fontsize=30, fontweight='bold')
 plt.xticks(fontsize=30, fontweight='bold')
 plt.yticks(fontsize=30, fontweight='bold')
-plt.savefig('01SVR_PE.png', dpi=600)
+plt.savefig('08MLR_PE.png', dpi=600)
 
 # Run Time
 finish_time = time()
