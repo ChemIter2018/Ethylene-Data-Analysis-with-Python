@@ -27,7 +27,7 @@ FurnaceDataPE = FurnaceData.iloc[:, 26]
 # random_state: RandomState instance or None, default=None
 X_train, X_test, y_train, y_test = train_test_split(FurnaceDataX_Scale, FurnaceDataPE, random_state=0, test_size=0.3)
 
-# SVR
+# DTR
 dtr_reg = AdaBoostRegressor(DecisionTreeRegressor(random_state=0), n_estimators=300)
 dtr_reg.fit(X_train, y_train)
 
