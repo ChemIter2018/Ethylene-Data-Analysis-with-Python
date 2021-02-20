@@ -5,6 +5,7 @@
 # @Software: PyCharm
 
 import pandas as pd
+import numpy as np
 
 from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import GridSearchCV
@@ -17,16 +18,17 @@ start_time = time()
 FurnaceData = pd.read_csv("00FurnaceCleanData.csv")
 FurnaceDataX = FurnaceData.iloc[:, 1:20]
 FurnaceDataX_Scale = preprocessing.scale(FurnaceDataX)
-FurnaceDataPE = FurnaceData.iloc[:, 26]
+# If value < 1, MLR Can't calculate normally, So multiply the value by 100.
+FurnaceDataPE = FurnaceData.iloc[:, 26]*100
 
 # Split Train and Test Data
 # random_state: RandomState instance or None, default=None
 X_train, X_test, y_train, y_test = train_test_split(FurnaceDataX_Scale, FurnaceDataPE, random_state=0, test_size=0.3)
-
+a = np.logspace(-1, 1, 5)
 parameters = [{'activation': ('identity', 'logistic', 'tanh', 'relu'),
                'solver': ('lbfgs', 'sgd', 'adam'),
-               'learning_rate':('constant', 'invscaling', 'adaptive'),
-               'alpha':[0.0001, 0.001, 0.01, 0.1]}]
+               'learning_rate': ('constant', 'invscaling', 'adaptive'),
+               'alpha': a}]
 
 mlp = MLPRegressor()
 clf = GridSearchCV(mlp, parameters, cv=5)
