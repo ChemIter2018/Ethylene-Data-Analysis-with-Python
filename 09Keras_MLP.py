@@ -70,7 +70,7 @@ plt.xlabel('Measured Value', fontsize=30, fontweight='bold')
 plt.ylabel('Predicted Value', fontsize=30, fontweight='bold')
 plt.xticks(fontsize=30, fontweight='bold')
 plt.yticks(fontsize=30, fontweight='bold')
-plt.savefig('08TF_MLR_PE.png', dpi=600)
+plt.savefig('10TF_MLR_PE.png', dpi=600)
 
 
 # Run Time
