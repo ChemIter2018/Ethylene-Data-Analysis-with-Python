@@ -39,7 +39,7 @@ model = keras.models.Sequential([
 ])
 
 model.compile(loss="mean_squared_error", optimizer=keras.optimizers.Adam(lr=1e-3), metrics=["mean_squared_error"])
-history = model.fit(X_train, y_train, epochs=2000)
+history = model.fit(X_train, y_train, epochs=1000)
 
 y_test_predict = model.predict(X_test)
 
@@ -70,7 +70,7 @@ plt.xlabel('Measured Value', fontsize=30, fontweight='bold')
 plt.ylabel('Predicted Value', fontsize=30, fontweight='bold')
 plt.xticks(fontsize=30, fontweight='bold')
 plt.yticks(fontsize=30, fontweight='bold')
-plt.savefig('10TF_MLR_PE.png', dpi=600)
+plt.savefig('10TF_MLP_PE.png', dpi=600)
 
 
 # Run Time
