@@ -39,7 +39,7 @@ model = keras.models.Sequential([
 ])
 
 model.compile(loss="mean_squared_error", optimizer=keras.optimizers.Adam(lr=1e-3), metrics=["mean_squared_error"])
-history = model.fit(X_train, y_train, epochs=1000)
+history = model.fit(X_train, y_train, epochs=750)
 
 y_test_predict = model.predict(X_test)
 
