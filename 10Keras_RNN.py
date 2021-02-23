@@ -21,9 +21,13 @@ start_time = time()
 # Read Furnace Data
 FurnaceData = pd.read_csv("00FurnaceCleanData.csv")
 FurnaceDataX = FurnaceData.iloc[:, 1:20]
-FurnaceDataX_Scale = preprocessing.StandardScaler(FurnaceDataX)
+ScalerSave = preprocessing.StandardScaler().fit(FurnaceDataX)
+FurnaceDataX_Scale = ScalerSave.transform(FurnaceDataX)
+pickle.dump(ScalerSave, open('Saved_Model/Keras_RNN_ScalerSave.pkl', 'wb'))
+# ScalerSave = pickle.load(open('Saved_Model/Keras_RNN_ScalerSave.pkl', 'rb'))
+# X_test = ScalerSave.transform(X_test)
 
-# If value < 1, MLR Can't calculate normally, So multiply the value by 100.
+# If value < 1, RNN Can't calculate normally, So multiply the value by 100.
 n = 100
 FurnaceDataPE = FurnaceData.iloc[:, 26] * n
 
@@ -43,7 +47,12 @@ model = keras.models.Sequential([
 ])
 model.summary()
 model.compile(loss="mean_squared_error", optimizer=keras.optimizers.Adam(lr=1e-3), metrics=["mean_squared_error"])
-history = model.fit(X_train, y_train, epochs=3000)
+history = model.fit(X_train, y_train, epochs=2000)
+
+# Save Model
+model.save('Saved_Model/Keras_RNN')
+# model = tf.keras.models.load_model('Saved_Model/Keras_RNN')
+
 X_test = np.reshape(X_test, (len(X_test), 1, 19))
 y_test_predict = model.predict(X_test)
 
@@ -76,7 +85,7 @@ plt.xlabel('Measured Value', fontsize=25, fontweight='bold')
 plt.ylabel('Predicted Value', fontsize=25, fontweight='bold')
 plt.xticks(fontsize=25, fontweight='bold')
 plt.yticks(fontsize=25, fontweight='bold')
-plt.savefig('10TF_RNN_PE.png', dpi=600)
+plt.savefig('Pictures/10TF_RNN_PE.png', dpi=600)
 
 # Run Time
 finish_time = time()
