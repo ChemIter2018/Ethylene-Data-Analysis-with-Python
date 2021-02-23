@@ -49,7 +49,7 @@ history = model.fit(X_train, y_train, epochs=1000)
 
 # Save Model
 model.save('Saved_Model/Keras_MLP')
-# new_model = tf.keras.models.load_model('Saved_Model/Keras_MLP')
+# model = tf.keras.models.load_model('Saved_Model/Keras_MLP')
 
 y_test_predict = model.predict(X_test)
 
