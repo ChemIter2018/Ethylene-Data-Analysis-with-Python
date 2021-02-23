@@ -9,6 +9,7 @@ import pandas as pd
 import seaborn as sns
 import numpy as np
 import tensorflow as tf
+import pickle
 
 from tensorflow import keras
 from sklearn.model_selection import train_test_split
@@ -20,8 +21,13 @@ start_time = time()
 # Read Furnace Data
 FurnaceData = pd.read_csv("00FurnaceCleanData.csv")
 FurnaceDataX = FurnaceData.iloc[:, 1:20]
-FurnaceDataX_Scale = preprocessing.scale(FurnaceDataX)
-# If value < 1, MLR Can't calculate normally, So multiply the value by 100.
+ScalerSave = preprocessing.StandardScaler().fit(FurnaceDataX)
+FurnaceDataX_Scale = ScalerSave.transform(FurnaceDataX)
+pickle.dump(ScalerSave, open('Saved_Model/Keras_MLP_ScalerSave.pkl', 'wb'))
+# ScalerSave = pickle.load(open('Saved_Model/Keras_MLP_ScalerSave.pkl', 'rb'))
+# FurnaceDataX_Scale = ScalerSave.transform(FurnaceDataX)
+
+# If value < 1, MLP Can't calculate normally, So multiply the value by 100.
 n = 100
 FurnaceDataPE = FurnaceData.iloc[:, 26] * n
 
@@ -34,12 +40,16 @@ tf.random.set_seed(42)
 
 model = keras.models.Sequential([
     keras.layers.Dense(30, activation="relu", input_shape=X_train.shape[1:], name="layer1"),
-    # keras.layers.Dense(15, activation="relu", name="layer2"),
+    keras.layers.Dense(15, activation="relu", name="layer2"),
     keras.layers.Dense(1, name="layer3")
 ])
 
 model.compile(loss="mean_squared_error", optimizer=keras.optimizers.Adam(lr=1e-3), metrics=["mean_squared_error"])
-history = model.fit(X_train, y_train, epochs=750)
+history = model.fit(X_train, y_train, epochs=1000)
+
+# Save Model
+model.save('Saved_Model/Keras_MLP')
+# new_model = tf.keras.models.load_model('Saved_Model/Keras_MLP')
 
 y_test_predict = model.predict(X_test)
 
@@ -66,12 +76,13 @@ qq = np.linspace(np.min((y_test.min(), y_test_predict.min())),
                  np.max((y_test.max(), y_test_predict.max())))
 plt.plot(qq, qq, color="navy", ls="--", linewidth=2)
 
-plt.xlabel('Measured Value', fontsize=30, fontweight='bold')
-plt.ylabel('Predicted Value', fontsize=30, fontweight='bold')
-plt.xticks(fontsize=30, fontweight='bold')
-plt.yticks(fontsize=30, fontweight='bold')
-plt.savefig('10TF_MLP_PE.png', dpi=600)
-
+plt.text(0.483, 0.545, "$\mathregular{R^2}$" + " = "
+         + str(r2_score(y_test, y_test_predict)), fontsize=20, fontweight='bold')
+plt.xlabel('Measured Value', fontsize=25, fontweight='bold')
+plt.ylabel('Predicted Value', fontsize=25, fontweight='bold')
+plt.xticks(fontsize=25, fontweight='bold')
+plt.yticks(fontsize=25, fontweight='bold')
+plt.savefig('Pictures/09TF_MLP_PE.png', dpi=600)
 
 # Run Time
 finish_time = time()
