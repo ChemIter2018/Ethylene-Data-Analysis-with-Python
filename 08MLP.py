@@ -28,12 +28,12 @@ FurnaceDataPE = FurnaceData.iloc[:, 26] * n
 # random_state: RandomState instance or None, default=None
 X_train, X_test, y_train, y_test = train_test_split(FurnaceDataX_Scale, FurnaceDataPE, random_state=0, test_size=0.3)
 
-# MLR
-mlr_reg = MLPRegressor(random_state=1, max_iter=500, activation='tanh', learning_rate='constant', solver='adam')
-mlr_reg.fit(X_train, y_train)
+# MLP
+mlp_reg = MLPRegressor(random_state=1, max_iter=500, activation='tanh', learning_rate='constant', solver='adam')
+mlp_reg.fit(X_train, y_train)
 
 # Test Data Predict
-y_test_predict = mlr_reg.predict(X_test)
+y_test_predict = mlp_reg.predict(X_test)
 
 # Measure Regression Performance
 print(r2_score(y_test, y_test_predict))
