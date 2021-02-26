@@ -16,6 +16,9 @@ from sklearn.metrics import r2_score
 from sklearn import preprocessing
 from time import *
 
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 start_time = time()
 # Read Furnace Data
 FurnaceData = pd.read_csv("00FurnaceCleanData.csv")
@@ -27,7 +30,7 @@ FurnaceDataPE = FurnaceData.iloc[:, 26] * n
 
 # Split Train and Test Data
 # random_state: RandomState instance or None, default=None
-X_train, X_test, y_train, y_test = train_test_split(FurnaceDataX, FurnaceDataPE, random_state=0, test_size=0.3)
+X_train, X_test, y_train, y_test = train_test_split(FurnaceDataX, FurnaceDataPE, random_state=1, test_size=0.3)
 
 # StandardScaler Data
 ScalerSave = preprocessing.StandardScaler().fit(FurnaceDataX)
@@ -43,7 +46,7 @@ model = keras.models.Sequential([
     keras.layers.Dense(1, name="layer3")
 ])
 model.compile(loss="mean_squared_error", optimizer=keras.optimizers.Adam(lr=1e-3), metrics=["mean_squared_error"])
-model.fit(X_train, y_train, epochs=1000)
+model.fit(X_train, y_train, epochs=30000, batch_size=10000)
 
 # Save or Load Model
 model.save('Saved_Model/Keras_MLP')
