@@ -41,11 +41,9 @@ X_train = ScalerSave.transform(X_train)
 X_test = ScalerSave.transform(X_test)
 pickle.dump(ScalerSave, open('Saved_Model/SL_SVR_ScalerSave.pkl', 'wb'))
 
-parameters = {'kernel': ('poly', 'rbf'), 'C': [10, 100, 1000],
-              'gamma': ('auto', 'scale'), 'degree': [3, 5, 7],
-              'epsilon': [0.05, 0.1, 0.5]}
+parameters = {'C': [100, 1000], 'gamma': ('auto', 'scale')}
 
-svr = SVR()
+svr = SVR(kernel='rbf', degree=3, epsilon=0.5)
 clf = GridSearchCV(svr, parameters, cv=5)
 clt_result = clf.fit(X_train, y_train)
 
@@ -55,8 +53,8 @@ f.write(json.dumps(best_params).encode())
 f.close()
 
 # SVR
-svr_reg = SVR(kernel=best_params['kernel'], degree=best_params['degree'], C=best_params['C'],
-              epsilon=best_params['epsilon'], gamma=best_params['gamma'])
+svr_reg = SVR(kernel='rbf', degree=3, C=best_params['C'],
+              epsilon=0.5, gamma=best_params['gamma'])
 svr_reg.fit(X_train, y_train)
 
 joblib.dump(svr_reg, 'Saved_Model/scikit-learn_SVR.model')
