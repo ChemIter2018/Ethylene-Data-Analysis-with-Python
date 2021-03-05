@@ -2,7 +2,6 @@
 
 Using feed properties and ethylene plant operating parameters to predict P/E(Propylene/Ethylene ratio).
 
-
 Feed properties：PINA, ASTMD86(IBP,D10,D30,D50,D70,D90,FBP,DEN)	
 
 Operating parameters: Feed flowrate, DS, DS/HC, Crossover temperature and pressure, COT and COP
