@@ -16,3 +16,5 @@ Regression:
 5. Multi-layer Perceptron(Keras)
 6. Recurrent neural network(Keras)
 
+https://github.com/ChemIter2018/Ethylene-Data-Analysis-with-Python/blob/main/Pictures/Models.jpg
+https://github.com/ChemIter2018/Ethylene-Data-Analysis-with-Python/blob/main/Pictures/02SL_SVR_PE_8.png
