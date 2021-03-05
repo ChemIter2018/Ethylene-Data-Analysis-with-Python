@@ -29,7 +29,7 @@ FurnaceDataPE = FurnaceData.iloc[:, 26] * n
 X_train, X_test, y_train, y_test = train_test_split(FurnaceDataX_Scale, FurnaceDataPE, random_state=0, test_size=0.3)
 
 # SVR
-svm_reg = SVR(kernel="rbf", degree=3, C=1000, epsilon=0.5, gamma="auto")
+svm_reg = SVR(kernel="rbf", degree=3, C=1000, epsilon=0.1, gamma="scale")
 svm_reg.fit(X_train, y_train)
 
 # Test Data Predict
