@@ -17,6 +17,10 @@ from sklearn.metrics import r2_score
 from sklearn import preprocessing
 from time import *
 
+# Disable GPU
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
 start_time = time()
 
 # Read Furnace Data
